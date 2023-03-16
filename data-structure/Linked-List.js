@@ -1,91 +1,118 @@
 class Node {
-    constructor(element) {
-        this.element = element;
-        this.next = null;
+    constructor(data) {
+        this.data = data
+        this.next = null
     }
 }
 
 class LinkedList {
-
-    constructor () {
+    constructor() {
         this.head = null;
-        this.size = 0;
+        this.length = 0
     }
 
-    add(element) {
-        let node = new Node(element);
-        let current;
-        if( this.head == null) {
-            this.head = node
+    append(data) {
+        let newNode = new Node(data)
+        if (this.head === null) {
+            this.head = newNode
         } else {
-            current = this.head;
-            while(current.next) {
-                current = current.next;
+            let currentNode = this.head
+            while (currentNode.next !== null) {
+                currentNode = currentNode.next
             }
-            current.next = node
+            currentNode.next = newNode
         }
-        this.size ++;
+        this.length++
     }
 
-    insertAt( element, index) {
-        if( index < 0 || index > this.size) {
-            return 'invalid index'
+    insert(index, data) {
+        if (index < 0 || index > this.length) {
+            throw Error("index out of length")
+        }
+        let newNode = new Node(data)
+        if (index == 0) {
+            newNode.next = this.head
+            this.head = newNode
         } else {
-            let node = new Node(element);
-            let curr,prev;
-            curr = this.head;
-            if(index == 0) {
-                node.next = this.head;
-                this.head = node
-            } else {
-                curr = this.head;
-                let it = 0;
-                while (it < index) {
-                    it++;
-                    prev = curr;
-                    curr = curr.next;
-                }
-                node.next = curr;
-                prev.next = node;
-                // console.log(prev);
+            let currentNode = this.head
+            for (let i = 0; i < index; i++) {
+                currentNode = currentNode.next
             }
-            this.size++
+            newNode.next = currentNode.next;
+            currentNode.next = newNode
         }
+        this.length++
     }
-    printListData() {
-        let current = this.head;
-        while(current) {
-            console.log(current.element);
-            current = current.next;
+
+    remove(index) {
+        if (index < 0 || index > this.length) {
+            throw Error("index out of length")
         }
+        if (index == 0) {
+            this.head = this.head.next
+        } else {
+            let currentNode = this.head
+            for (let i = 0; i < index - 1; i++) {
+                currentNode = currentNode.next
+            }
+            currentNode.next = currentNode.next.next
+        }
+        this.length--
+    }
+
+    get(index) {
+        if (index < 0 || index > this.length) {
+            throw Error("index out of length")
+        }
+        let currentNode = this.head
+        for (let i = 0; i < index; i++) {
+            currentNode = currentNode.next
+        }
+        return currentNode.data
+    }
+    set(index, data) {
+
+        if (index < 0 || index > this.length) {
+            throw Error("index out of length")
+        }
+        let currentNode = this.head
+        for (let i = 0; i < index; i++) {
+            currentNode = currentNode.next
+        }
+        currentNode.data = data
+        return currentNode.data
+    }
+    reverse() {
+        let previous_node = null;
+        let current_node = this.head;
+        while (current_node !== null) {
+            const next_node = current_node.next;
+            current_node.next = previous_node;
+            previous_node = current_node;
+            current_node = next_node;
+        }
+        this.head = previous_node;
+    }
+
+    toArray() {
+        let result = []
+        let current_node = this.head
+        while (current_node !== null) {
+            result.push(current_node.data)
+            current_node = current_node.next
+        }
+        return result
+    }
+
+    toString() {
+        return this.toArray().toString()
     }
 }
-
-function reverse(node) {
-    let current = node;
-    let next = null;
-    let prev = null;
-    while(current != null) {
-        next = current.next;
-        current.next = prev;
-        prev = current;
-        current = next;
-        console.log(prev);
-    }
-    node = prev;
-    // console.log(node);
-}
-/**
- * current = head; next = null; prev = null
- * chạy while
- * next = current.next => 3
- */
-let list = new LinkedList()
-list.add(new Node(1))
-list.add(new Node(2));
-list.add(new Node(4));
-
-list.insertAt(new Node(3),1)
-list.printListData();
-
-reverse(list.head);
+const list = new LinkedList();
+list.append(1);
+list.append(2);
+list.append(3);
+list.append(4);
+console.log(list.toString()); // prints "1,2,3,4"
+list.reverse();
+console.log(list.toString());
