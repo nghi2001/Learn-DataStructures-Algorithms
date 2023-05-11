@@ -108,11 +108,16 @@ class LinkedList {
         return this.toArray().toString()
     }
 }
-const list = new LinkedList();
-list.append(1);
-list.append(2);
-list.append(3);
-list.append(4);
-console.log(list.toString()); // prints "1,2,3,4"
-list.reverse();
-console.log(list.toString());
+// const list = new LinkedList();
+// list.append(1);
+// list.append(2);
+// list.append(3);
+// list.append(4);
+// console.log(list.toString()); // prints "1,2,3,4"
+// list.reverse();
+// console.log(list.toString());
+
+module.exports = {
+    LinkedList,
+    Node
+}
